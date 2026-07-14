@@ -1,0 +1,180 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "2" : {
+      "comment" : "Tab width option: 2 spaces per tab"
+    },
+    "4" : {
+      "comment" : "Tab width option: 4 spaces per tab"
+    },
+    "8" : {
+      "comment" : "Tab width option: 8 spaces per tab"
+    },
+    "Add Link…" : {
+      "comment" : "Format menu item that inserts a Markdown link with a URL prompt"
+    },
+    "Appearance" : {
+      "comment" : "Settings section header for appearance options"
+    },
+    "Bold" : {
+      "comment" : "Format menu item that toggles **bold**"
+    },
+    "Clear Menu" : {
+      "comment" : "Open Recent menu item that clears the recent files list"
+    },
+    "Close Tab" : {
+      "comment" : "Tab context menu item that closes the tab\nTooltip for the tab close button"
+    },
+    "Copy Path" : {
+      "comment" : "File menu item that copies the absolute path of the current document\nTab context menu item that copies the file's absolute path"
+    },
+    "Copy Path (⌘⌥C)" : {
+      "comment" : "Toolbar menu item that copies the file's absolute path, with its keyboard shortcut shown"
+    },
+    "Copy Relative Path" : {
+      "comment" : "File menu item that copies the path of the current document relative to the Git root or home directory\nTab context menu item that copies the file's path relative to the Git root or home directory"
+    },
+    "Copy Relative Path (⌘⌥⇧C)" : {
+      "comment" : "Toolbar menu item that copies the file's relative path, with its keyboard shortcut shown"
+    },
+    "Custom" : {
+      "comment" : "Relative path base option: a user-specified directory"
+    },
+    "Custom Path" : {
+      "comment" : "Settings text field label for the custom relative path base directory"
+    },
+    "Dark" : {
+      "comment" : "Theme option that is always dark"
+    },
+    "Decrease Font Size" : {
+      "comment" : "View menu item that makes the editor and preview text smaller"
+    },
+    "Default View Mode" : {
+      "comment" : "Settings picker label for which view mode new tabs open in"
+    },
+    "Editor" : {
+      "comment" : "Settings section header for editor options"
+    },
+    "Export" : {
+      "comment" : "File menu submenu that contains PDF/HTML export actions"
+    },
+    "Export as HTML…" : {
+      "comment" : "Export submenu item that saves the current document as a standalone HTML file"
+    },
+    "Export as PDF…" : {
+      "comment" : "Export submenu item that saves the current document as a PDF file"
+    },
+    "File Changed on Disk" : {
+      "comment" : "Title of the conflict alert when the open file was modified externally"
+    },
+    "Font Size" : {
+      "comment" : "Settings label for the editor font size"
+    },
+    "Format" : {
+      "comment" : "Format menu title"
+    },
+    "Git Root" : {
+      "comment" : "Relative path base option: the nearest Git repository root"
+    },
+    "Hide Outline" : {
+      "comment" : "View menu item that hides the document outline sidebar"
+    },
+    "Home" : {
+      "comment" : "Relative path base option: the user's home directory"
+    },
+    "Increase Font Size" : {
+      "comment" : "View menu item that makes the editor and preview text larger"
+    },
+    "Inline Code" : {
+      "comment" : "Format menu item that toggles `inline code`"
+    },
+    "Italic" : {
+      "comment" : "Format menu item that toggles _italic_"
+    },
+    "Just you and your Markdown." : {
+      "comment" : "Subtitle on the welcome screen"
+    },
+    "Keep My Changes" : {
+      "comment" : "Conflict alert action: keep local edits"
+    },
+    "Light" : {
+      "comment" : "Theme option that is always light"
+    },
+    "New File" : {
+      "comment" : "Welcome screen button that starts a blank untitled document"
+    },
+    "New Tab" : {
+      "comment" : "File menu item that opens a new tab\nTooltip for the button that opens a new tab"
+    },
+    "No Headings" : {
+      "comment" : "Placeholder shown in the outline sidebar when the document has no headings"
+    },
+    "No Recent Files" : {
+      "comment" : "Placeholder shown when the Open Recent menu is empty"
+    },
+    "Open File…" : {
+      "comment" : "Welcome screen button that opens a file picker"
+    },
+    "Open in Finder" : {
+      "comment" : "Tab context menu item that reveals the file in Finder\nToolbar menu item that reveals the file in Finder"
+    },
+    "Open Recent" : {
+      "comment" : "File submenu listing recently opened files"
+    },
+    "Open…" : {
+      "comment" : "File menu item that opens a Markdown file"
+    },
+    "Overwrite" : {
+      "comment" : "Conflict alert action: overwrite the file on disk with local edits"
+    },
+    "Paths" : {
+      "comment" : "Settings section header for path-copying options"
+    },
+    "Recent" : {
+      "comment" : "Header of the recent files list on the welcome screen"
+    },
+    "Relative Path Base" : {
+      "comment" : "Settings picker label for the base directory used when copying a relative path"
+    },
+    "Reload From Disk" : {
+      "comment" : "Conflict alert action: discard local edits and reload the file"
+    },
+    "Reset Font Size" : {
+      "comment" : "View menu item that restores the default text size"
+    },
+    "Save" : {
+      "comment" : "File menu item that saves the current document"
+    },
+    "Show Next Tab" : {
+      "comment" : "Window menu item that selects the next tab"
+    },
+    "Show Outline" : {
+      "comment" : "View menu item that shows the document outline sidebar"
+    },
+    "Show Previous Tab" : {
+      "comment" : "Window menu item that selects the previous tab"
+    },
+    "Strikethrough" : {
+      "comment" : "Format menu item that toggles ~~strikethrough~~"
+    },
+    "System" : {
+      "comment" : "Theme option that follows the system appearance"
+    },
+    "Tab %@" : {
+      "comment" : "Window menu item that jumps to the Nth tab"
+    },
+    "Tab Width" : {
+      "comment" : "Settings picker label for the number of spaces inserted per tab"
+    },
+    "The file was modified by another application." : {
+      "comment" : "Message of the external change conflict alert"
+    },
+    "Theme" : {
+      "comment" : "Settings picker label for choosing the app's appearance theme"
+    },
+    "View Mode" : {
+      "comment" : "Toolbar picker that switches between editor, split, and preview"
+    }
+  },
+  "version" : "1.0"
+}

@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="css/github-markdown-light.css" id="css-doc-light">
+  <link rel="stylesheet" href="css/github-markdown-dark.css" id="css-doc-dark" disabled>
+  <link rel="stylesheet" href="css/github.min.css" id="css-hljs-light">
+  <link rel="stylesheet" href="css/github-dark.min.css" id="css-hljs-dark" disabled>
+  <style>
+    /* overscroll-behavior-x: 사이드바 가로 스와이프가 페이지/코드블록을 출렁이게(elastic bounce)
+       하지 않도록 가로 오버스크롤을 끈다 (세로 스크롤은 영향 없음). */
+    html, body { margin: 0; padding: 0; overscroll-behavior-x: none; }
+    .markdown-body pre { overscroll-behavior-x: none; }
+    /* 문서 배경의 단일 출처 — AppColors.contentBackground(창 통합 배경)와 반드시 같은 값 유지. */
+    body[data-theme="light"] { background-color: #F7F7F5; }
+    body[data-theme="dark"]  { background-color: #0d1117; }
+    /* github-markdown CSS 의 자체 배경을 끄고 body 색이 문서 배경을 결정하게 한다
+       (본문 칼럼(max-width)과 좌우 여백의 색이 갈라지지 않도록). */
+    .markdown-body { background-color: transparent; }
+    .markdown-body {
+      box-sizing: border-box;
+      min-height: 100vh;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 48px;
+    }
+    /* PDF 내보내기/인쇄 전용: 화면 기본(16px)은 인쇄물에선 과대해 표준 문서 크기로 줄인다.
+       페이지 여백은 NSPrintInfo(36pt)가 주므로 내부 패딩은 제거. 긴 코드 줄은 잘리는 대신 줄바꿈. */
+    @media print {
+      .markdown-body { font-size: 12px; max-width: none; padding: 0; }
+      .markdown-body pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+    }
+  </style>
+  <script src="js/markdown-it.min.js"></script>
+  <script src="js/highlight.min.js"></script>
+  <script src="js/markdown-it-task-lists.min.js"></script>
+</head>
+<body data-theme="light">
+  <main id="content" class="markdown-body"></main>
+  <script>
+    'use strict';
+
+    // 언어 미지정 코드블록은 auto-detect 없이 plain 처리 (성능/오탐 방지).
+    const md = window.markdownit({
+      html: false,
+      linkify: true,
+      typographer: true,
+      highlight: (str, lang) => {
+        if (lang && window.hljs && hljs.getLanguage(lang)) {
+          try { return hljs.highlight(str, { language: lang }).value; } catch (_) {}
+        }
+        return '';
+      }
+    });
+
+    if (window.markdownitTaskLists) {
+      md.use(window.markdownitTaskLists, { enabled: false });
+    }
+
+    // 아웃라인 사이드바 점프(§ 아웃라인 사이드바): 헤딩 토큰의 소스 라인(token.map[0], 0-based)을
+    // data-line 속성으로 출력해 Swift 쪽 OutlineItem.line 과 정확히 매칭시킨다.
+    const defaultHeadingOpen = md.renderer.rules.heading_open || function (tokens, idx, options, env, self) {
+      return self.renderToken(tokens, idx, options);
+    };
+    md.renderer.rules.heading_open = (tokens, idx, options, env, self) => {
+      const token = tokens[idx];
+      if (token.map && token.map.length) {
+        token.attrSet('data-line', String(token.map[0]));
+      }
+      return defaultHeadingOpen(tokens, idx, options, env, self);
+    };
+
+    window.renderMarkdown = (b64) => {
+      const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+      const src = new TextDecoder('utf-8').decode(bytes);
+      const ratio = window.scrollY / (document.body.scrollHeight || 1);
+      document.getElementById('content').innerHTML = md.render(src);
+      window.scrollTo(0, ratio * document.body.scrollHeight);
+    };
+
+    // 웹뷰 LRU 풀(§4.2): 해제됐던 탭을 재생성할 때 마지막 스크롤 비율을 복원한다.
+    window.scrollToRatio = (r) => {
+      window.scrollTo(0, r * (document.body.scrollHeight || 0));
+    };
+
+    // 아웃라인 사이드바 클릭 점프(§ 아웃라인 사이드바): line 은 OutlineItem.line 과 동일한
+    // 0-based 소스 라인 인덱스 — heading_open 룰이 심어둔 data-line 과 매칭해 스크롤한다.
+    window.scrollToLine = (line) => {
+      document.querySelector(
+        'h1[data-line="' + line + '"],h2[data-line="' + line + '"],h3[data-line="' + line + '"],' +
+        'h4[data-line="' + line + '"],h5[data-line="' + line + '"],h6[data-line="' + line + '"]'
+      )?.scrollIntoView({ behavior: 'auto', block: 'start' });
+    };
+
+    // 사이드바 스와이프 제외 판정: 좌표 (x, y) 아래에 가로 스크롤 가능한 요소(코드블록/표)가
+    // 있으면 true — 그 위에서 시작한 가로 제스처는 콘텐츠 스크롤의 몫이라 사이드바를 토글하지 않는다.
+    window.canScrollHorizontallyAt = (x, y) => {
+      let el = document.elementFromPoint(x, y);
+      while (el && el !== document.body) {
+        if (el.scrollWidth > el.clientWidth + 1) {
+          const overflowX = getComputedStyle(el).overflowX;
+          if (overflowX === 'auto' || overflowX === 'scroll') return true;
+        }
+        el = el.parentElement;
+      }
+      return false;
+    };
+
+    // 스크롤 비율을 Swift(DocumentViewModel)로 미러링 — 풀 해제 후 복원의 기준값.
+    let scrollRAF = 0;
+    window.addEventListener('scroll', () => {
+      if (scrollRAF) return;
+      scrollRAF = requestAnimationFrame(() => {
+        scrollRAF = 0;
+        const ratio = window.scrollY / (document.body.scrollHeight || 1);
+        window.webkit?.messageHandlers?.scroll?.postMessage(ratio);
+      });
+    }, { passive: true });
+
+    // 테마: 'system' | 'light' | 'dark'. 시스템 모드는 prefers-color-scheme 을 따라간다.
+    const THEME_STYLESHEETS = {
+      light: ['css-doc-light', 'css-hljs-light'],
+      dark:  ['css-doc-dark',  'css-hljs-dark'],
+    };
+    let themeSetting = 'system';
+    const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    function applyTheme() {
+      const effective = themeSetting === 'system'
+        ? (darkQuery.matches ? 'dark' : 'light')
+        : themeSetting;
+      document.body.dataset.theme = effective;
+      for (const [name, ids] of Object.entries(THEME_STYLESHEETS)) {
+        for (const id of ids) {
+          document.getElementById(id).disabled = (name !== effective);
+        }
+      }
+    }
+
+    darkQuery.addEventListener('change', () => {
+      if (themeSetting === 'system') applyTheme();
+    });
+
+    window.setTheme = (name) => {
+      themeSetting = name;
+      applyTheme();
+    };
+
+    applyTheme();
+  </script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+markdown-it 14.1.0 (npm markdown-it/dist)
+highlight.js 11.11.1 common build (npm @highlightjs/cdn-assets)
+markdown-it-task-lists 2.1.1 (npm dist)
+github-markdown-css 5.8.1 (npm)
+hljs styles: github.min.css, github-dark.min.css (@highlightjs/cdn-assets/styles)

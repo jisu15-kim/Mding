@@ -5,6 +5,8 @@ import SwiftUI
 /// Picker/Stepper/TextField 등 시스템 컨트롤로만 구성되어 별도 glass 처리가 필요 없다.
 struct SettingsView: View {
     @Bindable private var settings = AppSettings.shared
+    @State private var isDefaultHandler = false
+    @State private var currentHandlerName: String?
 
     var body: some View {
         Form {
@@ -73,9 +75,48 @@ struct SettingsView: View {
             } header: {
                 Text("Paths", comment: "Settings section header for path-copying options")
             }
+
+            Section {
+                HStack {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Default Markdown App", comment: "Settings label for making Mding the default app for .md files")
+                        if isDefaultHandler {
+                            Text("Mding is the default app for Markdown files", comment: "Settings caption shown when Mding is already the default Markdown app")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        } else if let currentHandlerName {
+                            Text("Current default: \(currentHandlerName)", comment: "Settings caption showing which app currently opens Markdown files")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    Spacer()
+                    Button {
+                        setAsDefaultApp()
+                    } label: {
+                        Text("Set as Default", comment: "Settings button that makes Mding the default app for Markdown files")
+                    }
+                    .disabled(isDefaultHandler)
+                }
+            } header: {
+                Text("Files", comment: "Settings section header for file handling options")
+            }
         }
         .formStyle(.grouped)
         .frame(minWidth: 420, minHeight: 340)
         .preferredColorScheme(settings.theme.colorScheme)
+        .onAppear(perform: refreshDefaultHandlerStatus)
+    }
+
+    private func refreshDefaultHandlerStatus() {
+        isDefaultHandler = DefaultAppService.isCurrentHandler()
+        currentHandlerName = DefaultAppService.currentHandlerName()
+    }
+
+    private func setAsDefaultApp() {
+        Task {
+            try? await DefaultAppService.setAsDefault()
+            refreshDefaultHandlerStatus()
+        }
     }
 }

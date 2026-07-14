@@ -40,6 +40,9 @@
     "Copy Relative Path (⌘⌥⇧C)" : {
       "comment" : "Toolbar menu item that copies the file's relative path, with its keyboard shortcut shown"
     },
+    "Current default: %@" : {
+      "comment" : "Settings caption showing which app currently opens Markdown files"
+    },
     "Custom" : {
       "comment" : "Relative path base option: a user-specified directory"
     },
@@ -51,6 +54,9 @@
     },
     "Decrease Font Size" : {
       "comment" : "View menu item that makes the editor and preview text smaller"
+    },
+    "Default Markdown App" : {
+      "comment" : "Settings label for making Mding the default app for .md files"
     },
     "Default View Mode" : {
       "comment" : "Settings picker label for which view mode new tabs open in"
@@ -69,6 +75,9 @@
     },
     "File Changed on Disk" : {
       "comment" : "Title of the conflict alert when the open file was modified externally"
+    },
+    "Files" : {
+      "comment" : "Settings section header for file handling options"
     },
     "Font Size" : {
       "comment" : "Settings label for the editor font size"
@@ -102,6 +111,9 @@
     },
     "Light" : {
       "comment" : "Theme option that is always light"
+    },
+    "Mding is the default app for Markdown files" : {
+      "comment" : "Settings caption shown when Mding is already the default Markdown app"
     },
     "New File" : {
       "comment" : "Welcome screen button that starts a blank untitled document"
@@ -147,6 +159,9 @@
     },
     "Save" : {
       "comment" : "File menu item that saves the current document"
+    },
+    "Set as Default" : {
+      "comment" : "Settings button that makes Mding the default app for Markdown files"
     },
     "Show Next Tab" : {
       "comment" : "Window menu item that selects the next tab"

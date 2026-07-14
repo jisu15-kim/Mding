@@ -9,11 +9,13 @@ struct WelcomeView: View {
     @State private var recents: [URL] = []
 
     var body: some View {
-        VStack(spacing: 28) {
+        // 좌측 정렬 콘텐츠 컬럼(카드 2×184+12 = 380pt)을 윈도우 중앙에 배치.
+        VStack(alignment: .leading, spacing: 28) {
             header
             actions
             recentFiles
         }
+        .frame(width: 380, alignment: .leading)
         .padding(40)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         // 자체 배경 없음 — 크롬 통합 배경(WindowRootView.containerBackground)이 그대로 비친다.
@@ -27,42 +29,60 @@ struct WelcomeView: View {
     }
 
     private var header: some View {
-        VStack(spacing: 8) {
+        // 아이콘 좌측, 타이틀·서브타이틀 묶음을 아이콘 세로 중앙에 정렬.
+        HStack(spacing: 10) {
             // 실제 앱 아이콘(Assets 의 AppIcon)을 그대로 보여준다 — 심벌 플레이스홀더 대체.
             Image(nsImage: NSApp.applicationIconImage)
                 .resizable()
-                .frame(width: 96, height: 96)
-            Text(verbatim: "Mding")  // 앱 이름 — 번역 대상 아님
-                .font(.largeTitle.weight(.semibold))
-            Text("Just you and your Markdown.", comment: "Subtitle on the welcome screen")
-                .foregroundStyle(.secondary)
+                .frame(width: 56, height: 56)
+            VStack(alignment: .leading, spacing: 1) {
+                Text(verbatim: "Mding")  // 앱 이름 — 번역 대상 아님
+                    .font(.system(size: 26, weight: .semibold))
+                Text("Just you and your Markdown.", comment: "Subtitle on the welcome screen")
+                    .font(.system(size: 13))
+                    .foregroundStyle(.secondary)
+            }
         }
     }
 
     private var actions: some View {
         GlassEffectContainer(spacing: 12) {
             HStack(spacing: 12) {
-                Button {
+                actionCard(systemImage: "square.and.pencil") {
+                    Text("New File", comment: "Welcome screen button that starts a blank untitled document")
+                } action: {
                     document.startBlankDocument()
-                } label: {
-                    Label {
-                        Text("New File", comment: "Welcome screen button that starts a blank untitled document")
-                    } icon: {
-                        Image(systemName: "square.and.pencil")
-                    }
                 }
-                .buttonStyle(.glassProminent)
 
-                Button(action: openFile) {
-                    Label {
-                        Text("Open File…", comment: "Welcome screen button that opens a file picker")
-                    } icon: {
-                        Image(systemName: "folder")
-                    }
+                actionCard(systemImage: "folder") {
+                    Text("Open File…", comment: "Welcome screen button that opens a file picker")
+                } action: {
+                    openFile()
                 }
-                .buttonStyle(.glass)
             }
         }
+    }
+
+    /// 카드형 액션 버튼 — 아이콘 상단·라벨 하단, 좌측 정렬 (에디터류 웰컴 화면 관례).
+    private func actionCard(
+        systemImage: String,
+        @ViewBuilder title: () -> Text,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            VStack(alignment: .leading, spacing: 10) {
+                Image(systemName: systemImage)
+                    .font(.system(size: 17, weight: .medium))
+                title()
+                    .font(.system(size: 13))
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 6)
+            .padding(.vertical, 4)
+        }
+        .buttonStyle(.glass)
+        .buttonBorderShape(.roundedRectangle(radius: 16))
+        .frame(width: 184)
     }
 
     @ViewBuilder

@@ -116,6 +116,47 @@ git add appcast.xml
 git commit -m "release: $TAG"
 git push origin main
 
+# 7) Homebrew tap cask 갱신 ----------------------------------------------------
+echo "▸ Homebrew tap cask 갱신"
+TAP_REPO="jisu15-kim/homebrew-tap"
+SHA256=$(shasum -a 256 "$DMG" | awk '{print $1}')
+CASK_FILE="$RELEASE_DIR/mding.rb"
+cat >"$CASK_FILE" <<EOF
+cask "mding" do
+  version "$VERSION"
+  sha256 "$SHA256"
+
+  url "https://github.com/$REPO/releases/download/v#{version}/Mding-#{version}.dmg"
+  name "Mding"
+  desc "Lightweight native Markdown viewer and editor"
+  homepage "https://github.com/$REPO"
+
+  livecheck do
+    url :url
+    strategy :github_latest
+  end
+
+  auto_updates true
+  depends_on macos: :tahoe
+
+  app "Mding.app"
+
+  zap trash: [
+    "~/Library/Caches/com.jisukim.Mding",
+    "~/Library/HTTPStorages/com.jisukim.Mding",
+    "~/Library/Preferences/com.jisukim.Mding.plist",
+    "~/Library/Saved Application State/com.jisukim.Mding.savedState",
+    "~/Library/WebKit/com.jisukim.Mding",
+  ]
+end
+EOF
+EXISTING_SHA=$(gh api "repos/$TAP_REPO/contents/Casks/mding.rb" --jq .sha 2>/dev/null || true)
+gh api -X PUT "repos/$TAP_REPO/contents/Casks/mding.rb" \
+    -f message="mding $VERSION" \
+    -f content="$(base64 -i "$CASK_FILE")" \
+    ${EXISTING_SHA:+-f sha="$EXISTING_SHA"} >/dev/null
+echo "✓ tap 갱신: https://github.com/$TAP_REPO"
+
 echo ""
 echo "✓ Mding $VERSION 릴리스 완료"
 echo "  https://github.com/$REPO/releases/tag/$TAG"

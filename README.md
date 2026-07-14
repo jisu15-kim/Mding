@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="Mding/Resources/Assets.xcassets/AppIcon.appiconset/icon_256x256.png" width="128" alt="Mding">
+</p>
+
 # Mding
 
 내가 쓰려고 만든 마크다운 뷰어 및 에디터

@@ -19,6 +19,9 @@
     "Bold" : {
       "comment" : "Format menu item that toggles **bold**"
     },
+    "Check for Updates…" : {
+      "comment" : "App menu item that checks for a new app version"
+    },
     "Clear Menu" : {
       "comment" : "Open Recent menu item that clears the recent files list"
     },

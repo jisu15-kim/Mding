@@ -83,11 +83,26 @@ codesign --verify --deep --strict "$APP"
 
 # 3) DMG 패키징 --------------------------------------------------------------
 echo "▸ DMG 생성"
+command -v create-dmg >/dev/null || brew install create-dmg
 STAGE="$RELEASE_DIR/dmg-stage"
 mkdir -p "$STAGE"
 cp -R "$APP" "$STAGE/"
-ln -s /Applications "$STAGE/Applications"
-hdiutil create -volname "Mding $VERSION" -srcfolder "$STAGE" -ov -format UDZO -quiet "$DMG"
+# 배경: 1x·2x PNG 를 멀티해상도 TIFF 로 합쳐 레티나 대응.
+# 원본 PNG 는 scripts/generate_dmg_background.swift 로 생성·커밋되어 있다.
+tiffutil -cathidpicheck scripts/dmg-assets/dmg-background.png scripts/dmg-assets/dmg-background@2x.png \
+    -out "$RELEASE_DIR/dmg-background.tiff" 2>/dev/null
+create-dmg \
+    --volname "Mding $VERSION" \
+    --volicon "$APP/Contents/Resources/AppIcon.icns" \
+    --background "$RELEASE_DIR/dmg-background.tiff" \
+    --window-pos 200 150 \
+    --window-size 660 420 \
+    --icon-size 128 \
+    --text-size 13 \
+    --icon "Mding.app" 165 190 \
+    --hide-extension "Mding.app" \
+    --app-drop-link 495 190 \
+    "$DMG" "$STAGE"
 # DMG 컨테이너도 서명해야 spctl(Gatekeeper) 평가를 통과한다.
 codesign --force --timestamp --sign "$SIGN_IDENTITY" "$DMG"
 

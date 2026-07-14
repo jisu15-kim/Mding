@@ -40,7 +40,7 @@ echo "▸ Mding $VERSION (build $BUILD_NUM) 릴리스 시작"
     || { echo "✗ 작업 트리가 clean 하지 않습니다. 커밋 후 다시 실행하세요."; exit 1; }
 git rev-parse -q --verify "refs/tags/$TAG" >/dev/null \
     && { echo "✗ 태그 $TAG 가 이미 존재합니다. MARKETING_VERSION 을 올리세요."; exit 1; }
-if [[ -f appcast.xml ]] && grep -q "sparkle:version=\"$BUILD_NUM\"" appcast.xml; then
+if [[ -f appcast.xml ]] && grep -q "<sparkle:version>$BUILD_NUM</sparkle:version>" appcast.xml; then
     echo "✗ build $BUILD_NUM 이 이미 appcast 에 있습니다. CURRENT_PROJECT_VERSION 을 올리세요."
     exit 1
 fi
@@ -124,12 +124,14 @@ cp "$DMG" "$UPDATES/"
     -o "$REPO_ROOT/appcast.xml" \
     "$UPDATES"
 
-# 6) GitHub Release 게시 + appcast 푸시 ---------------------------------------
+# 6) appcast 커밋·푸시 → GitHub Release 게시 -----------------------------------
+# 반드시 push 가 먼저다 — gh release create 는 태그를 "원격 main 의 현재 HEAD" 에
+# 만들므로, push 전에 실행하면 태그가 한 릴리스 이전 커밋에 붙는다 (v1.0.0~v1.0.4 실사).
 echo "▸ GitHub Release 게시"
-gh release create "$TAG" "$DMG" --title "Mding $VERSION" --generate-notes
 git add appcast.xml
 git commit -m "release: $TAG"
 git push origin main
+gh release create "$TAG" "$DMG" --title "Mding $VERSION" --generate-notes --target "$(git rev-parse HEAD)"
 
 # 7) Homebrew tap cask 갱신 ----------------------------------------------------
 echo "▸ Homebrew tap cask 갱신"

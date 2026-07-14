@@ -78,5 +78,9 @@ Doc/
 AGENTS.md
 PROGRESS.md
 
+# 릴리스 도구·산출물 (release.sh 가 재생성)
+.tools/
+.release/
+
 # oh-my-claudecode 세션 상태
 .omc/

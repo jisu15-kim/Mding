@@ -5,6 +5,9 @@ let project = Project(
     settings: .settings(base: [
         "MARKETING_VERSION": "1.0.0",
         "CURRENT_PROJECT_VERSION": "1",
+        "DEVELOPMENT_TEAM": "846TMZL7WC",
+        // 공증(notarization) 필수 조건 — 모든 타깃에 적용.
+        "ENABLE_HARDENED_RUNTIME": "YES",
     ]),
     targets: [
         .target(
@@ -16,6 +19,9 @@ let project = Project(
             infoPlist: .extendingDefault(with: [
                 "CFBundleShortVersionString": "$(MARKETING_VERSION)",
                 "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)",
+                // Sparkle 자동 업데이트 — appcast 는 main 브랜치 raw URL 에서 서빙.
+                "SUFeedURL": "https://raw.githubusercontent.com/jisu15-kim/Mding/main/appcast.xml",
+                "SUPublicEDKey": "Hx7FBLN+dosEOzHhCvBrM16cjsaDQlLdjmkbmNZKAeQ=",
                 "CFBundleDocumentTypes": [[
                     "CFBundleTypeName": "Markdown Document",
                     "CFBundleTypeRole": "Editor",
@@ -36,7 +42,10 @@ let project = Project(
                 .folderReference(path: "Mding/Resources/Preview"),
             ],
             // 앱이 appex 에 의존하면 Tuist 가 PlugIns/ 에 자동 임베드한다.
-            dependencies: [.target(name: "MdingQuickLook")]
+            dependencies: [
+                .target(name: "MdingQuickLook"),
+                .external(name: "Sparkle"),
+            ]
         ),
         .target(
             name: "MdingQuickLook",

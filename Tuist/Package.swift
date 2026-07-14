@@ -15,8 +15,7 @@ import PackageDescription
 let package = Package(
     name: "Mding",
     dependencies: [
-        // Add your own dependencies here:
-        // .package(url: "https://github.com/Alamofire/Alamofire", from: "5.0.0"),
-        // You can read more about dependencies here: https://docs.tuist.io/documentation/tuist/dependencies
+        // 자동 업데이트 (배포판 전용 — appcast 는 GitHub raw 에서 서빙)
+        .package(url: "https://github.com/sparkle-project/Sparkle", from: "2.6.0"),
     ]
 )

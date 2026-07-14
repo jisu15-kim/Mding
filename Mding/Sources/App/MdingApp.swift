@@ -9,6 +9,7 @@ struct MdingApp: App {
             WindowRootView()
         }
         .commands {
+            UpdateCommands()
             FileCommands()
             TabCommands()
             FormatCommands()

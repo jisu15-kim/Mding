@@ -46,7 +46,7 @@ struct WelcomeView: View {
     }
 
     private var actions: some View {
-        GlassEffectContainer(spacing: 12) {
+        GlassContainer(spacing: 12) {
             HStack(spacing: 12) {
                 actionCard(systemImage: "square.and.pencil") {
                     Text("New File", comment: "Welcome screen button that starts a blank untitled document")
@@ -80,7 +80,7 @@ struct WelcomeView: View {
             .padding(.horizontal, 6)
             .padding(.vertical, 4)
         }
-        .buttonStyle(.glass)
+        .glassButtonStyle()
         .buttonBorderShape(.roundedRectangle(radius: 16))
         .frame(width: 184)
     }

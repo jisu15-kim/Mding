@@ -6,7 +6,7 @@ struct TabBarView: View {
     @Bindable var window: WindowViewModel
 
     var body: some View {
-        GlassEffectContainer(spacing: 6) {
+        GlassContainer(spacing: 6) {
             HStack(spacing: 6) {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 4) {
@@ -35,7 +35,7 @@ struct TabBarView: View {
                     Image(systemName: "plus")
                         .frame(width: 20, height: 20)
                 }
-                .buttonStyle(.glass)
+                .glassButtonStyle()
                 .help(Text("New Tab", comment: "Tooltip for the button that opens a new tab"))
             }
             .padding(.horizontal, 8)

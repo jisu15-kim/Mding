@@ -3,8 +3,8 @@ import ProjectDescription
 let project = Project(
     name: "Mding",
     settings: .settings(base: [
-        "MARKETING_VERSION": "1.0.2",
-        "CURRENT_PROJECT_VERSION": "3",
+        "MARKETING_VERSION": "1.0.3",
+        "CURRENT_PROJECT_VERSION": "4",
         "DEVELOPMENT_TEAM": "846TMZL7WC",
         // 공증(notarization) 필수 조건 — 모든 타깃에 적용.
         "ENABLE_HARDENED_RUNTIME": "YES",
@@ -15,7 +15,7 @@ let project = Project(
             destinations: .macOS,
             product: .app,
             bundleId: "com.jisukim.Mding",
-            deploymentTargets: .macOS("26.0"),
+            deploymentTargets: .macOS("15.0"),
             infoPlist: .extendingDefault(with: [
                 "CFBundleShortVersionString": "$(MARKETING_VERSION)",
                 "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)",
@@ -52,7 +52,7 @@ let project = Project(
             destinations: .macOS,
             product: .appExtension,
             bundleId: "com.jisukim.Mding.QuickLookPreview",
-            deploymentTargets: .macOS("26.0"),
+            deploymentTargets: .macOS("15.0"),
             infoPlist: .extendingDefault(with: [
                 "CFBundleShortVersionString": "$(MARKETING_VERSION)",
                 "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)",
@@ -87,7 +87,7 @@ let project = Project(
             destinations: .macOS,
             product: .unitTests,
             bundleId: "com.jisukim.MdingTests",
-            deploymentTargets: .macOS("26.0"),
+            deploymentTargets: .macOS("15.0"),
             infoPlist: .default,
             sources: ["Mding/Tests/**"],
             resources: [],

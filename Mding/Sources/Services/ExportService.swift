@@ -90,7 +90,7 @@ enum ExportService {
     }
 
     /// `WKWebView.printOperation` 실패 시 폴백 — 페이지네이션 없는 연속 PDF(전체 콘텐츠를
-    /// 한 번에 캡처)를 생성한다. macOS 26 최소 타깃이라 `createPDF` API 는 항상 사용 가능.
+    /// 한 번에 캡처)를 생성한다. `createPDF` 는 macOS 11+ API 라 항상 사용 가능.
     private static func fallbackCreatePDF(from webView: WKWebView, to url: URL, completion: @escaping (Bool) -> Void) {
         webView.createPDF(configuration: WKPDFConfiguration()) { result in
             switch result {

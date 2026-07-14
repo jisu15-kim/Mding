@@ -12,7 +12,7 @@
 brew install --cask jisu15-kim/tap/mding
 ```
 
-또는 [Releases](https://github.com/jisu15-kim/Mding/releases/latest)에서 DMG를 받아 설치합니다. (macOS 26.0+)
+또는 [Releases](https://github.com/jisu15-kim/Mding/releases/latest)에서 DMG를 받아 설치합니다. (macOS 15.0+, v1.0.2 이하는 26.0+)
 
 ## 빌드
 

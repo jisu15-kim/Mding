@@ -3,8 +3,8 @@ import ProjectDescription
 let project = Project(
     name: "Mding",
     settings: .settings(base: [
-        "MARKETING_VERSION": "1.0.3",
-        "CURRENT_PROJECT_VERSION": "4",
+        "MARKETING_VERSION": "1.0.4",
+        "CURRENT_PROJECT_VERSION": "5",
         "DEVELOPMENT_TEAM": "846TMZL7WC",
         // 공증(notarization) 필수 조건 — 모든 타깃에 적용.
         "ENABLE_HARDENED_RUNTIME": "YES",

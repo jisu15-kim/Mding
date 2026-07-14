@@ -104,7 +104,6 @@ struct SettingsView: View {
         }
         .formStyle(.grouped)
         .frame(width: 400, height: 520)
-        .preferredColorScheme(settings.theme.colorScheme)
         .onAppear(perform: refreshDefaultHandlerStatus)
     }
 

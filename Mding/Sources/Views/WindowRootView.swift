@@ -40,7 +40,6 @@ struct WindowRootView: View {
         .background(WindowAccessor { window.attach(window: $0) })
         // 두손가락 가로 스와이프로 아웃라인 토글(§ 아웃라인 사이드바) — 스크롤 이벤트를 관찰만 한다.
         .background(SwipeRevealMonitor())
-        .preferredColorScheme(AppSettings.shared.theme.colorScheme)
         // Bear 스타일 크롬 통합: 툴바/탭바/콘텐츠를 하나의 배경으로 잇는다(밴드·구분선 제거).
         // 창 배경은 preview.html 문서 배경과 동일한 dynamic color 라 프리뷰 웹뷰와 시임이 없다.
         // 사이드바 칼럼만 시스템 머티리얼로 미묘하게 구분된다(레퍼런스 UI와 동일).

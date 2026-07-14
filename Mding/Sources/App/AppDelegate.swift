@@ -9,6 +9,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillFinishLaunching(_ notification: Notification) {
         // 탭은 WindowViewModel 이 커스텀으로 관리한다 — 시스템 윈도우 탭 비활성화.
         NSWindow.allowsAutomaticWindowTabbing = false
+        // 저장된 테마를 앱 전역 appearance 로 반영 (§4.6). 이후 변경은 ThemeManager.apply 가 담당.
+        NSApp.appearance = AppSettings.shared.theme.nsAppearance
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {

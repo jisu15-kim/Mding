@@ -5,7 +5,7 @@ import AppKit
 /// 반드시 같은 값이어야 한다. github-markdown CSS 의 `.markdown-body` 자체 배경은 preview.html 에서
 /// 투명 처리되어 body 색이 문서 배경을 결정한다.
 enum AppColors {
-    /// 창의 appearance 는 `WindowRootView.preferredColorScheme` 가 이미 테마 설정을 강제하므로
+    /// 창의 appearance 는 `NSApp.appearance`(ThemeManager/AppDelegate)가 이미 테마 설정을 강제하므로
     /// 이 dynamic color 도 aqua/darkAqua 분기로 자동 추종한다.
     static let contentBackground = NSColor(name: nil) { appearance in
         let isDark = appearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua

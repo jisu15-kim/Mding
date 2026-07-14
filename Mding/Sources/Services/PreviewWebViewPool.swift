@@ -135,8 +135,9 @@ final class PreviewWKWebView: WKWebView {
     }
 }
 
-/// 프리뷰 스크롤 비율(0~1)을 소유 문서로 미러링하는 메시지 핸들러 (§4.2).
-/// WKScriptMessageHandler 콜백은 메인 스레드에서 호출되므로 `assumeIsolated` 가 안전하다.
+/// 프리뷰 스크롤 메시지 핸들러 (§4.2, § 스크롤 동기화).
+/// restore(전체 높이 비율)는 문서로 미러링(풀 해제 후 복원 기준), sync(스크롤 가능 범위 비율)는
+/// 스플릿 모드 에디터 동기화로 전달한다. 콜백은 메인 스레드라 `assumeIsolated` 가 안전하다.
 private final class ScrollReporter: NSObject, WKScriptMessageHandler {
     private weak var document: DocumentViewModel?
 
@@ -148,9 +149,15 @@ private final class ScrollReporter: NSObject, WKScriptMessageHandler {
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage
     ) {
-        guard let ratio = (message.body as? NSNumber)?.doubleValue else { return }
+        guard let body = message.body as? [String: Any] else { return }
         MainActor.assumeIsolated {
-            document?.previewScrollRatio = ratio
+            guard let document else { return }
+            if let restore = (body["restore"] as? NSNumber)?.doubleValue {
+                document.previewScrollRatio = restore
+            }
+            if let sync = (body["sync"] as? NSNumber)?.doubleValue {
+                ScrollSyncService.previewDidScroll(document, syncRatio: sync)
+            }
         }
     }
 }

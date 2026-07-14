@@ -106,16 +106,29 @@
       return false;
     };
 
-    // 스크롤 비율을 Swift(DocumentViewModel)로 미러링 — 풀 해제 후 복원의 기준값.
+    // 스크롤 비율을 Swift(DocumentViewModel)로 미러링.
+    // - restore: 전체 높이 비율 — 풀 해제 후 복원의 기준값 (기존 semantics 유지)
+    // - sync:    스크롤 가능 범위(높이-뷰포트) 비율 — 스플릿 모드 에디터 동기화용.
+    //            에디터발 프로그램 스크롤 직후(suppressSyncUntil)에는 생략해 에코 루프를 끊는다.
     let scrollRAF = 0;
+    let suppressSyncUntil = 0;
     window.addEventListener('scroll', () => {
       if (scrollRAF) return;
       scrollRAF = requestAnimationFrame(() => {
         scrollRAF = 0;
-        const ratio = window.scrollY / (document.body.scrollHeight || 1);
-        window.webkit?.messageHandlers?.scroll?.postMessage(ratio);
+        const msg = { restore: window.scrollY / (document.body.scrollHeight || 1) };
+        if (performance.now() >= suppressSyncUntil) {
+          msg.sync = window.scrollY / Math.max(1, document.body.scrollHeight - window.innerHeight);
+        }
+        window.webkit?.messageHandlers?.scroll?.postMessage(msg);
       });
     }, { passive: true });
+
+    // 스플릿 모드(§ 스크롤 동기화): 에디터 스크롤을 프리뷰에 반영 — 스크롤 가능 범위 비율.
+    window.syncScrollFromEditor = (r) => {
+      suppressSyncUntil = performance.now() + 250;
+      window.scrollTo(0, r * Math.max(0, document.body.scrollHeight - window.innerHeight));
+    };
 
     // 테마: 'system' | 'light' | 'dark'. 시스템 모드는 prefers-color-scheme 을 따라간다.
     const THEME_STYLESHEETS = {

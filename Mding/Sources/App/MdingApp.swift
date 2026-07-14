@@ -169,23 +169,56 @@ struct TabCommands: Commands {
 
             Divider()
 
+            // ⌘1~9 는 뷰 모드 전환(ViewCommands)이 차지 — 탭 점프는 ⌘⌥1~9 (⌘⌥←/→ 와 일관).
             ForEach(1...9, id: \.self) { number in
                 Button {
                     activeWindow?.selectTab(at: number - 1)
                 } label: {
                     Text("Tab \(number)", comment: "Window menu item that jumps to the Nth tab")
                 }
-                .keyboardShortcut(KeyEquivalent(Character("\(number)")), modifiers: .command)
+                .keyboardShortcut(KeyEquivalent(Character("\(number)")), modifiers: [.command, .option])
                 .disabled(number > (activeWindow?.tabs.count ?? 0))
             }
         }
     }
 }
 
-/// View 메뉴: 아웃라인(TOC) 사이드바 토글. macOS 표준 Toggle Sidebar 단축키(⌃⌘S)를 그대로 쓴다.
+/// View 메뉴: 뷰 모드 전환(⌘1/2/3) + 아웃라인(TOC) 사이드바 토글(⌃⌘S, macOS 표준).
 struct ViewCommands: Commands {
+    @FocusedValue(\.activeDocument) private var activeDocument
+
+    /// Welcome 탭에서는 뷰 모드가 없다 — 문서가 에디터 상태일 때만 활성.
+    private var canSwitchViewMode: Bool { activeDocument?.mode == .editor }
+
     var body: some Commands {
         CommandGroup(before: .toolbar) {
+            // 라벨은 뷰 모드 토글과 같은 문자열(ViewMode.label) 재사용. 순서도 토글 노출 순서와 동일.
+            Button {
+                activeDocument?.viewMode = .preview
+            } label: {
+                Text(ViewMode.preview.label)
+            }
+            .keyboardShortcut("1", modifiers: .command)
+            .disabled(!canSwitchViewMode)
+
+            Button {
+                activeDocument?.viewMode = .editor
+            } label: {
+                Text(ViewMode.editor.label)
+            }
+            .keyboardShortcut("2", modifiers: .command)
+            .disabled(!canSwitchViewMode)
+
+            Button {
+                activeDocument?.viewMode = .split
+            } label: {
+                Text(ViewMode.split.label)
+            }
+            .keyboardShortcut("3", modifiers: .command)
+            .disabled(!canSwitchViewMode)
+
+            Divider()
+
             Button {
                 withAnimation(.easeInOut(duration: 0.2)) {
                     AppSettings.shared.showOutline.toggle()

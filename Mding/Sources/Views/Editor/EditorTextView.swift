@@ -16,6 +16,16 @@ final class EditorTextView: NSTextView {
     /// md 파일 드롭 콜백(윈도우 전역 드롭 §4.1 확장) — true 반환 시 텍스트 삽입 대신 파일을 연다.
     var onMarkdownFileDrop: (([URL]) -> Bool)?
 
+    /// 스플릿 스크롤 동기화 대상 문서 — SourceEditorView 가 마운트마다 갱신한다.
+    weak var syncDocument: DocumentViewModel?
+
+    /// clip view bounds 변경(스크롤) → 프리뷰 동기화. 옵저버 등록은 SourceEditorView 가
+    /// 스크롤뷰 생성 시 1회 수행한다 (macOS 10.11+ 는 dealloc 시 자동 해제).
+    @objc func clipViewBoundsDidChange(_ notification: Notification) {
+        guard let scrollView = enclosingScrollView, let syncDocument else { return }
+        ScrollSyncService.editorDidScroll(syncDocument, scrollView: scrollView)
+    }
+
     override func becomeFirstResponder() -> Bool {
         let didBecome = super.becomeFirstResponder()
         if didBecome { onFocusChange?(true) }

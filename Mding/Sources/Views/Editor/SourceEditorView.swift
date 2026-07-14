@@ -27,6 +27,7 @@ struct SourceEditorView: NSViewRepresentable {
                 textView.delegate = context.coordinator
                 textView.onFocusChange = onFocusChange
                 textView.onMarkdownFileDrop = markdownFileDropHandler
+                textView.syncDocument = document
             }
             return cached
         }
@@ -67,6 +68,17 @@ struct SourceEditorView: NSViewRepresentable {
         textView.isAutomaticSpellingCorrectionEnabled = false
         textView.string = document.text
 
+        // 스플릿 스크롤 동기화(§ 스크롤 동기화): 에디터 스크롤을 프리뷰로 전파.
+        // 셀렉터 옵저버는 macOS 10.11+ 에서 해제 없이 안전(제로잉 약참조).
+        textView.syncDocument = document
+        scrollView.contentView.postsBoundsChangedNotifications = true
+        NotificationCenter.default.addObserver(
+            textView,
+            selector: #selector(EditorTextView.clipViewBoundsDidChange(_:)),
+            name: NSView.boundsDidChangeNotification,
+            object: scrollView.contentView
+        )
+
         EditorViewCache.shared.store(scrollView, for: document.id)
         return scrollView
     }
@@ -76,6 +88,7 @@ struct SourceEditorView: NSViewRepresentable {
         guard let textView = scrollView.documentView as? EditorTextView else { return }
         textView.onFocusChange = onFocusChange
         textView.onMarkdownFileDrop = markdownFileDropHandler
+        textView.syncDocument = document
 
         // 설정(§4.6) 반영 — 달라졌을 때만 set(불필요한 NSFont 재할당 방지).
         let fontSize = AppSettings.shared.editorFontSize

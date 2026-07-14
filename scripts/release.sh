@@ -21,6 +21,7 @@ cd "$REPO_ROOT"
 
 REPO="jisu15-kim/Mding"
 SCHEME="Mding"
+SIGN_IDENTITY="Developer ID Application: Jisu Kim (846TMZL7WC)"
 NOTARY_PROFILE="${NOTARY_PROFILE:-mding-notary}"
 SPARKLE_BIN="$REPO_ROOT/.tools/sparkle/bin"
 RELEASE_DIR="$REPO_ROOT/.release"
@@ -87,6 +88,8 @@ mkdir -p "$STAGE"
 cp -R "$APP" "$STAGE/"
 ln -s /Applications "$STAGE/Applications"
 hdiutil create -volname "Mding $VERSION" -srcfolder "$STAGE" -ov -format UDZO -quiet "$DMG"
+# DMG 컨테이너도 서명해야 spctl(Gatekeeper) 평가를 통과한다.
+codesign --force --timestamp --sign "$SIGN_IDENTITY" "$DMG"
 
 # 4) 공증 + 스테이플 ----------------------------------------------------------
 echo "▸ 공증 제출 (Apple 서버 대기, 수 분 소요)"

@@ -2,6 +2,14 @@
 
 내가 쓰려고 만든 마크다운 뷰어 및 에디터
 
+## 설치
+
+```bash
+brew install --cask jisu15-kim/tap/mding
+```
+
+또는 [Releases](https://github.com/jisu15-kim/Mding/releases/latest)에서 DMG를 받아 설치합니다. (macOS 26.0+)
+
 ## 빌드
 
 ```bash

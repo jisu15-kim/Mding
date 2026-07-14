@@ -3,6 +3,14 @@
     <channel>
         <title>Mding</title>
         <item>
+            <title>1.0.3</title>
+            <pubDate>Tue, 14 Jul 2026 17:03:02 +0900</pubDate>
+            <sparkle:version>4</sparkle:version>
+            <sparkle:shortVersionString>1.0.3</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/jisu15-kim/Mding/releases/download/v1.0.3/Mding-1.0.3.dmg" length="2073543" type="application/octet-stream" sparkle:edSignature="vTFbWMbYfGJTXpjuJnmZfs96gtJDuLVAIRuopfuHVwlWhHOc08iR5IDK1DRtPSu1aOnUDIv5VQnHtFSQBg1VCQ=="/>
+        </item>
+        <item>
             <title>1.0.2</title>
             <pubDate>Tue, 14 Jul 2026 16:45:51 +0900</pubDate>
             <sparkle:version>3</sparkle:version>

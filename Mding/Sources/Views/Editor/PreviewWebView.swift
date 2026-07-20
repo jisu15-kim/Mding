@@ -13,6 +13,7 @@ struct PreviewWebView: NSViewRepresentable {
         let (webView, isNew) = PreviewWebViewPool.shared.acquire(for: document)
         webView.navigationDelegate = context.coordinator
         context.coordinator.webView = webView
+        context.coordinator.document = document
         context.coordinator.pendingMarkdown = document.previewText
 
         // md 파일 드롭을 문서가 속한 윈도우로 라우팅(윈도우 전역 드롭 §4.1 확장).
@@ -41,6 +42,7 @@ struct PreviewWebView: NSViewRepresentable {
     }
 
     func updateNSView(_ webView: WKWebView, context: Context) {
+        context.coordinator.document = document
         context.coordinator.pendingMarkdown = document.previewText
         context.coordinator.renderIfNeeded()
         Self.applyZoom(to: webView)
@@ -64,6 +66,7 @@ struct PreviewWebView: NSViewRepresentable {
     final class Coordinator: NSObject, WKNavigationDelegate {
         let documentID: UUID
         weak var webView: WKWebView?
+        weak var document: DocumentViewModel?
         var pendingMarkdown = ""
         var isShellLoaded = false
         /// 퇴출 후 재생성 시 복원할 스크롤 비율. 재사용 웹뷰에는 적용하지 않는다.
@@ -82,6 +85,8 @@ struct PreviewWebView: NSViewRepresentable {
                 restoreScrollRatio = nil
                 MarkdownRenderer.restoreScroll(ratio: ratio, in: webView)
             }
+            // 재렌더로 CSS 하이라이트가 사라지므로 찾기 바가 프리뷰를 대상으로 열려 있으면 다시 적용.
+            document?.find.previewDidRerender()
         }
 
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {

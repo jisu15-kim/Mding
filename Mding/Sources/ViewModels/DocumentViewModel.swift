@@ -26,6 +26,9 @@ final class DocumentViewModel: Identifiable {
     /// 외부에서 파일이 바뀌었는데 로컬도 dirty 인 충돌 상태 — View 가 시트를 띄운다.
     var hasExternalChangeConflict = false
 
+    /// 찾기(⌘F) 세션 — 편집기/프리뷰 공용. 뷰(NSTextView/WKWebView)는 소유하지 않고 캐시에서 빌려 검색한다.
+    @ObservationIgnored lazy var find = FindSession(document: self)
+
     /// 프리뷰 마지막 스크롤 비율(0~1). 웹뷰 LRU 풀(§4.2)이 해제 후 복원에 쓴다.
     /// 고빈도 미러링이므로 관찰 대상에서 제외한다.
     @ObservationIgnored var previewScrollRatio: Double = 0

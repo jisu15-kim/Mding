@@ -11,6 +11,7 @@ struct MdingApp: App {
         .commands {
             UpdateCommands()
             FileCommands()
+            FindCommands()
             TabCommands()
             FormatCommands()
             ViewCommands()
@@ -140,6 +141,55 @@ struct FileCommands: Commands {
     private func exportAsHTML() {
         guard let activeDocument else { return }
         ExportService.exportAsHTML(activeDocument)
+    }
+}
+
+/// Edit 메뉴 Find 서브메뉴 (§4.3) — 편집기/프리뷰 공용 통합 찾기(FindSession).
+/// SwiftUI 앱은 NSTextView 용 표준 Find 메뉴를 자동 제공하지 않으므로 직접 배선한다.
+struct FindCommands: Commands {
+    @FocusedValue(\.activeDocument) private var activeDocument
+
+    /// Welcome 탭에는 찾을 대상이 없다 — 문서가 에디터 상태일 때만 활성.
+    private var enabled: Bool { activeDocument?.mode == .editor }
+
+    var body: some Commands {
+        // 표준 관례대로 Edit 메뉴에 Find 서브메뉴를 둔다. 항목을 직접 배치해 문서 유무와 무관하게
+        // 항상 노출되도록 한다(문서가 없을 때는 비활성).
+        CommandGroup(after: .pasteboard) {
+            Divider()
+            Menu {
+                Button {
+                    activeDocument?.find.activate()
+                } label: {
+                    Text("Find…", comment: "Edit menu item that opens the find bar")
+                }
+                .keyboardShortcut("f", modifiers: .command)
+
+                Button {
+                    activeDocument?.find.next()
+                } label: {
+                    Text("Find Next", comment: "Edit menu item that jumps to the next search match")
+                }
+                .keyboardShortcut("g", modifiers: .command)
+
+                Button {
+                    activeDocument?.find.previous()
+                } label: {
+                    Text("Find Previous", comment: "Edit menu item that jumps to the previous search match")
+                }
+                .keyboardShortcut("g", modifiers: [.command, .shift])
+
+                Button {
+                    activeDocument?.find.useSelection()
+                } label: {
+                    Text("Use Selection for Find", comment: "Edit menu item that searches for the currently selected text")
+                }
+                .keyboardShortcut("e", modifiers: .command)
+            } label: {
+                Text("Find", comment: "Edit menu submenu that groups the find commands")
+            }
+            .disabled(!enabled)
+        }
     }
 }
 

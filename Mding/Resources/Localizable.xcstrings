@@ -25,6 +25,9 @@
     "Clear Menu" : {
       "comment" : "Open Recent menu item that clears the recent files list"
     },
+    "Close Find Bar" : {
+      "comment" : "Tooltip of the find bar close button"
+    },
     "Close Tab" : {
       "comment" : "Tab context menu item that closes the tab\nTooltip for the tab close button"
     },
@@ -79,6 +82,18 @@
     "Files" : {
       "comment" : "Settings section header for file handling options"
     },
+    "Find" : {
+      "comment" : "Accessibility label of the find bar search field\nEdit menu submenu that groups the find commands\nPlaceholder of the find bar search field"
+    },
+    "Find Next" : {
+      "comment" : "Edit menu item that jumps to the next search match\nTooltip of the find bar next-match button"
+    },
+    "Find Previous" : {
+      "comment" : "Edit menu item that jumps to the previous search match\nTooltip of the find bar previous-match button"
+    },
+    "Find…" : {
+      "comment" : "Edit menu item that opens the find bar"
+    },
     "Font Size" : {
       "comment" : "Settings label for the editor font size"
     },
@@ -111,6 +126,9 @@
     },
     "Light" : {
       "comment" : "Theme option that is always light"
+    },
+    "Match Case" : {
+      "comment" : "Tooltip of the find bar case-sensitivity toggle"
     },
     "Mding is the default app for Markdown files" : {
       "comment" : "Settings caption shown when Mding is already the default Markdown app"
@@ -189,6 +207,9 @@
     },
     "Theme" : {
       "comment" : "Settings picker label for choosing the app's appearance theme"
+    },
+    "Use Selection for Find" : {
+      "comment" : "Edit menu item that searches for the currently selected text"
     },
     "View Mode" : {
       "comment" : "Toolbar picker that switches between editor, split, and preview"

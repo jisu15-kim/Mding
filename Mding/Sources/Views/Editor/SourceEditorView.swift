@@ -60,8 +60,8 @@ struct SourceEditorView: NSViewRepresentable {
         textView.defaultParagraphStyle = paragraphStyle
         textView.typingAttributes[.paragraphStyle] = paragraphStyle
         textView.textContainerInset = NSSize(width: 8, height: 8)
-        textView.usesFindBar = true
-        textView.isIncrementalSearchingEnabled = true
+        // 찾기(⌘F)는 편집기/프리뷰 공용 커스텀 바(FindSession/FindBarView)가 담당한다 —
+        // NSTextView 표준 find bar 는 쓰지 않는다.
         textView.isAutomaticQuoteSubstitutionEnabled = false
         textView.isAutomaticDashSubstitutionEnabled = false
         textView.isAutomaticTextReplacementEnabled = false
@@ -120,6 +120,8 @@ struct SourceEditorView: NSViewRepresentable {
         func textDidChange(_ notification: Notification) {
             guard let textView = notification.object as? NSTextView else { return }
             document.updateText(textView.string)
+            // 찾기 바가 열려 있으면 매치 수를 최신 텍스트로 갱신.
+            document.find.editorTextDidChange()
         }
     }
 }

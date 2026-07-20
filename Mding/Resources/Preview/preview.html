@@ -31,6 +31,17 @@
       .markdown-body pre { white-space: pre-wrap; overflow-wrap: anywhere; }
     }
 
+    /* 표 컬럼 폭 보정 — table-layout:auto 는 컬럼별 min/max-content 폭으로 폭을 배분한다.
+       기본 word-break:normal 에서 CJK 는 글자마다 줄바꿈이 허용돼, 긴 영문 식별자가 폭을
+       독점하면 짧은 한글 셀이 1글자 폭까지 붕괴("화\n면")한다. keep-all 로 한글을 단어 단위로
+       묶어 붕괴를 막고, 셀 안 긴 코드 토큰은 접히게 해 특정 컬럼의 폭 독점을 완화한다. */
+    .markdown-body table th,
+    .markdown-body table td { word-break: keep-all; }
+    .markdown-body table code {
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
     /* 찾기(⌘F) 하이라이트 — CSS Custom Highlight API. DOM 을 바꾸지 않아 재렌더/스크롤과 무간섭. */
     ::highlight(md-find) { background-color: rgba(255, 213, 0, 0.40); }
     ::highlight(md-find-current) { background-color: rgba(255, 138, 0, 0.80); color: #000; }

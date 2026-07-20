@@ -24,6 +24,11 @@ enum MarkdownRenderer {
         webView.evaluateJavaScript("window.setTheme('\(name)')")
     }
 
+    /// 전체 너비(§전체너비): on 이면 본문 칼럼 상한(980px)을 풀어 창 폭을 쓴다(문서별 설정).
+    static func setFullWidth(_ on: Bool, in webView: WKWebView) {
+        webView.evaluateJavaScript("window.setFullWidth(\(on))")
+    }
+
     /// 아웃라인 사이드바 클릭 점프(§ 아웃라인 사이드바) — `line` 은 0-based 소스 라인 인덱스로
     /// heading_open 렌더러 룰이 심어둔 `data-line` 과 매칭한다.
     static func scrollToHeading(line: Int, in webView: WKWebView) {

@@ -282,6 +282,19 @@ struct ViewCommands: Commands {
             }
             .keyboardShortcut("s", modifiers: [.control, .command])
 
+            // 전체 너비(§전체너비): 프리뷰 본문 칼럼 상한(980px)을 풀어 창 폭을 쓴다. 문서별 설정.
+            Button {
+                activeDocument?.togglePreviewFullWidth()
+            } label: {
+                if activeDocument?.previewFullWidth == true {
+                    Text("Standard Width", comment: "View menu item that restores the fixed-width preview column")
+                } else {
+                    Text("Full Width", comment: "View menu item that expands the preview to the full window width")
+                }
+            }
+            .keyboardShortcut("l", modifiers: [.control, .command])
+            .disabled(!canSwitchViewMode)
+
             Divider()
 
             // 글자 크기: 에디터 폰트 + 프리뷰 zoom(pageZoom = fontSize/기본값)이 함께 움직인다.

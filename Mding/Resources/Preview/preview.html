@@ -24,6 +24,9 @@
       margin: 0 auto;
       padding: 32px 48px;
     }
+    /* 전체 너비(§전체너비): 문서별 설정을 Swift(setFullWidth)가 body 속성으로 반영한다.
+       켜지면 본문 칼럼 상한(980px)을 풀어 창 폭을 쓴다. 좌우 패딩은 유지해 가장자리에 붙지 않게 한다. */
+    body[data-fullwidth="true"] .markdown-body { max-width: none; }
     /* PDF 내보내기/인쇄 전용: 화면 기본(16px)은 인쇄물에선 과대해 표준 문서 크기로 줄인다.
        페이지 여백은 NSPrintInfo(36pt)가 주므로 내부 패딩은 제거. 긴 코드 줄은 잘리는 대신 줄바꿈. */
     @media print {
@@ -50,7 +53,7 @@
   <script src="js/highlight.min.js"></script>
   <script src="js/markdown-it-task-lists.min.js"></script>
 </head>
-<body data-theme="light">
+<body data-theme="light" data-fullwidth="false">
   <main id="content" class="markdown-body"></main>
   <script>
     'use strict';
@@ -255,6 +258,11 @@
     window.setTheme = (name) => {
       themeSetting = name;
       applyTheme();
+    };
+
+    // 전체 너비(§전체너비): 문서별 설정을 Swift(MarkdownRenderer.setFullWidth)가 구동한다.
+    window.setFullWidth = (on) => {
+      document.body.dataset.fullwidth = on ? 'true' : 'false';
     };
 
     applyTheme();

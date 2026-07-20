@@ -4,6 +4,12 @@
     "2" : {
       "comment" : "Tab width option: 2 spaces per tab"
     },
+    "Full Width" : {
+      "comment" : "View menu item that expands the preview to the full window width"
+    },
+    "Standard Width" : {
+      "comment" : "View menu item that restores the fixed-width preview column"
+    },
     "4" : {
       "comment" : "Tab width option: 4 spaces per tab"
     },

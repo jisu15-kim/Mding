@@ -23,6 +23,11 @@ final class DocumentViewModel: Identifiable {
     private(set) var isDirty = false
     var viewMode: ViewMode
 
+    /// 프리뷰 전체 너비(문서별, §전체너비). 켜면 본문 칼럼 상한(980px)을 풀어 창 폭을 쓴다.
+    /// 저장된 파일은 경로-키 저장소(`DocumentPrefsStore`)에 영속되고, Untitled 는 메모리로만 유지하다
+    /// 저장 시점에 기록한다. 관측 대상이라 `PreviewWebView` 가 변경을 받아 해당 웹뷰에 반영한다.
+    var previewFullWidth = false
+
     /// 외부에서 파일이 바뀌었는데 로컬도 dirty 인 충돌 상태 — View 가 시트를 띄운다.
     var hasExternalChangeConflict = false
 
@@ -80,6 +85,7 @@ final class DocumentViewModel: Identifiable {
         previewText = loaded
         outline = OutlineParser.parse(previewText)
         isDirty = false
+        previewFullWidth = DocumentPrefsStore.fullWidth(for: url)
         FileService.noteRecentDocument(url)
         startWatchingFile()
     }
@@ -104,6 +110,7 @@ final class DocumentViewModel: Identifiable {
         previewText = ""
         outline = OutlineParser.parse(previewText)
         isDirty = false
+        previewFullWidth = false
         // 빈 문서를 Preview 전용으로 열면 입력할 곳이 없다 — 기본값이 Preview 면 Editor 로 대체.
         if viewMode == .preview {
             viewMode = .editor
@@ -119,6 +126,15 @@ final class DocumentViewModel: Identifiable {
     /// Untitled 이면서 실제로 편집된 내용이 있는지 — 탭 닫기 확인용.
     var hasUnsavedUntitledContent: Bool {
         fileURL == nil && mode == .editor && !text.isEmpty
+    }
+
+    /// 프리뷰 전체 너비 토글(문서별, §전체너비). 저장된 파일이면 경로-키 저장소에 영속하고,
+    /// Untitled 면 메모리로만 유지하다 `saveDocument` 가 경로를 확보할 때 기록한다.
+    func togglePreviewFullWidth() {
+        previewFullWidth.toggle()
+        if let fileURL {
+            DocumentPrefsStore.setFullWidth(previewFullWidth, for: fileURL)
+        }
     }
 
     /// 에디터 textDidChange 진입점.
@@ -175,6 +191,8 @@ final class DocumentViewModel: Identifiable {
             fileURL = url
             isDirty = true
             _ = flush()
+            // Untitled 동안 켜둔 전체 너비 설정을 이제 경로가 생겼으니 영속화한다(§전체너비).
+            DocumentPrefsStore.setFullWidth(previewFullWidth, for: url)
             FileService.noteRecentDocument(url)
             startWatchingFile()
         } else {

@@ -35,8 +35,10 @@ struct PreviewWebView: NSViewRepresentable {
             }
         } else {
             // 풀에서 재사용: 셸은 이미 로드됨. 마지막 렌더 상태를 유지한 채 최신 본문만 반영.
+            // 재사용 웹뷰의 body 에는 이전 문서의 전체 너비 상태가 남아 있으므로 이 문서 값으로 재설정.
             context.coordinator.isShellLoaded = true
             context.coordinator.renderIfNeeded()
+            context.coordinator.applyFullWidthIfNeeded()
         }
         return webView
     }
@@ -45,6 +47,7 @@ struct PreviewWebView: NSViewRepresentable {
         context.coordinator.document = document
         context.coordinator.pendingMarkdown = document.previewText
         context.coordinator.renderIfNeeded()
+        context.coordinator.applyFullWidthIfNeeded()
         Self.applyZoom(to: webView)
     }
 
@@ -72,6 +75,8 @@ struct PreviewWebView: NSViewRepresentable {
         /// 퇴출 후 재생성 시 복원할 스크롤 비율. 재사용 웹뷰에는 적용하지 않는다.
         var restoreScrollRatio: Double?
         private var renderedMarkdown: String?
+        /// 웹뷰에 마지막으로 반영한 전체 너비 값(§전체너비). 중복 JS 호출을 막는 디프 기준.
+        private var appliedFullWidth: Bool?
 
         init(documentID: UUID) {
             self.documentID = documentID
@@ -89,10 +94,22 @@ struct PreviewWebView: NSViewRepresentable {
             document?.find.previewDidRerender()
         }
 
+        /// 문서별 전체 너비(§전체너비)를 웹뷰에 반영. 값이 바뀌었고 셸이 로드된 경우에만 JS 를 호출한다.
+        func applyFullWidthIfNeeded() {
+            guard isShellLoaded, let webView, let document else { return }
+            let target = document.previewFullWidth
+            guard appliedFullWidth != target else { return }
+            appliedFullWidth = target
+            MarkdownRenderer.setFullWidth(target, in: webView)
+        }
+
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
             isShellLoaded = true
             // 새로 로드된 셸은 현재 설정 테마로 초기화 (재사용 웹뷰는 ThemeManager 일괄 적용으로 이미 최신).
             MarkdownRenderer.setTheme(AppSettings.shared.theme.previewName, in: webView)
+            // 셸이 새로 로드되면 body 속성이 초기화되므로 이 문서의 전체 너비 값을 다시 반영.
+            appliedFullWidth = nil
+            applyFullWidthIfNeeded()
             renderIfNeeded()
         }
 

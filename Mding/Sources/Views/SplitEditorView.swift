@@ -17,7 +17,9 @@ struct SplitEditorView: View {
                         .frame(minWidth: 200, maxWidth: .infinity, maxHeight: .infinity)
                 }
                 if document.viewMode != .editor {
-                    PreviewWebView(document: document)
+                    // fullWidth 를 명시로 넘겨야 이 body 가 previewFullWidth 를 관측한다 —
+                    // 그래야 토글이 즉시 updateNSView 를 태워 웹뷰에 반영된다(§전체너비).
+                    PreviewWebView(document: document, fullWidth: document.previewFullWidth)
                         .frame(minWidth: 200, maxWidth: .infinity, maxHeight: .infinity)
                 }
             }

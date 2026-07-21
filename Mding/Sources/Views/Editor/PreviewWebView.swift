@@ -6,6 +6,10 @@ import WebKit
 /// 셸(preview.html)은 1회 로드하고 markdown 변경 시 JS 브리지로 본문만 갱신한다.
 struct PreviewWebView: NSViewRepresentable {
     let document: DocumentViewModel
+    /// 전체 너비(§전체너비)를 상위 `body` 가 관측하도록 명시 의존성으로 받는다. 이 값이 바뀌면
+    /// SwiftUI 가 `body` 를 재평가하며 `updateNSView` 를 다시 불러 웹뷰에 반영한다. (document 만
+    /// 넘기면 `previewFullWidth` 변경은 어느 body 도 읽지 않아 모드 전환 전까지 적용되지 않는다.)
+    let fullWidth: Bool
 
     func makeCoordinator() -> Coordinator { Coordinator(documentID: document.id) }
 

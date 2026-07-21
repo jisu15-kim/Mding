@@ -4,6 +4,8 @@ import SwiftUI
 /// 각 윈도우는 자신의 `WindowViewModel` 을 소유하고 `WindowRegistry` 에 등록한다.
 struct WindowRootView: View {
     @State private var window = WindowViewModel()
+    /// 최초 실행 온보딩 투어 노출 여부 — onAppear 에서 미완료일 때 1회 켜진다(§온보딩).
+    @State private var showOnboarding = false
 
     var body: some View {
         // 사이드바 = 창 전체 높이 기둥(시스템 머티리얼, 신호등 아래) + detail = 탭바/콘텐츠.
@@ -20,6 +22,9 @@ struct WindowRootView: View {
             .toolbar {
                 // 크롬 높이 통일: 툴바 구성이 탭 종류(Welcome/에디터)와 무관하게 항상 같아야
                 // 타이틀바 높이가 튀지 않는다 — Welcome 탭에서는 표시만 하고 비활성 처리.
+                ToolbarItem {
+                    fullWidthToggle
+                }
                 ToolbarItem {
                     viewModePicker
                 }
@@ -49,9 +54,17 @@ struct WindowRootView: View {
         .focusedSceneValue(\.activeDocument, window.selectedTab)
         .onAppear {
             WindowRegistry.shared.register(window)
+            // 최초 실행이면 이 창 위에 온보딩 투어를 띄운다. 완료/이탈 시 플래그가 true 가 되어
+            // 이후 창(및 다음 실행)에서는 다시 뜨지 않는다 — 첫 실행엔 창이 하나뿐이라 중복도 없다.
+            if !AppSettings.shared.hasCompletedOnboarding {
+                showOnboarding = true
+            }
         }
         .onDisappear {
             WindowRegistry.shared.unregister(window.id)
+        }
+        .sheet(isPresented: $showOnboarding) {
+            OnboardingView()
         }
     }
 
@@ -88,6 +101,26 @@ struct WindowRootView: View {
         } else {
             Color.clear  // 통합 창 배경(containerBackground)이 그대로 보인다.
         }
+    }
+
+    /// 프리뷰 전체 너비 토글(§전체너비). View 메뉴 ⌃⌘L 과 동일 동작을 세그먼트 컨트롤 좌측 아이콘 버튼으로 제공한다.
+    /// 크롬 높이 통일을 위해 Welcome 탭에서도 항상 표시하고, 에디터 탭이 아닐 때만 비활성화한다(뷰 모드 피커와 동일 규칙).
+    /// 여기서 `previewFullWidth` 를 읽으므로 토글 시 아이콘·툴팁이 즉시 갱신된다.
+    @ViewBuilder
+    private var fullWidthToggle: some View {
+        let document = window.selectedTab
+        let isFull = document?.previewFullWidth == true
+        Button {
+            document?.togglePreviewFullWidth()
+        } label: {
+            // 대각선 확장 글리프(§전체너비). 아이콘은 고정하고, 켜짐(전체 너비) 상태만 accent 색으로 강조한다.
+            Image(systemName: "arrow.up.left.and.arrow.down.right")
+                .foregroundStyle(isFull ? Color.accentColor : Color.primary)
+        }
+        .help(isFull
+            ? Text("Standard Width", comment: "Toolbar button tooltip that restores the fixed-width preview column")
+            : Text("Full Width", comment: "Toolbar button tooltip that expands the preview to the full window width"))
+        .disabled(document?.mode != .editor)
     }
 
     /// 뷰 모드 토글. Welcome 탭에서도 항상 표시(비활성)해 크롬 높이를 탭 종류와 무관하게 유지한다.

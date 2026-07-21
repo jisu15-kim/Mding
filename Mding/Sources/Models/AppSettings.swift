@@ -15,6 +15,7 @@ final class AppSettings {
         static let tabIndentWidth = "tabIndentWidth"
         static let defaultViewMode = "defaultViewMode"
         static let showOutline = "showOutline"
+        static let hasCompletedOnboarding = "hasCompletedOnboarding"
     }
 
     private let defaults: UserDefaults
@@ -41,6 +42,11 @@ final class AppSettings {
     var showOutline: Bool {
         didSet { defaults.set(showOutline, forKey: Key.showOutline) }
     }
+    /// 최초 실행 온보딩 투어 완료 여부 (§온보딩). 투어를 끝내거나 도중에 닫으면 true —
+    /// 이후로는 다시 노출하지 않는다. 기본값 false 는 신규 설치의 미설정 상태와 일치한다.
+    var hasCompletedOnboarding: Bool {
+        didSet { defaults.set(hasCompletedOnboarding, forKey: Key.hasCompletedOnboarding) }
+    }
 
     /// 테스트 주입용. 기본은 `.standard`.
     init(defaults: UserDefaults = .standard) {
@@ -59,6 +65,8 @@ final class AppSettings {
         defaultViewMode = Self.loadEnum(Key.defaultViewMode, default: .preview, from: defaults)
 
         showOutline = defaults.object(forKey: Key.showOutline) as? Bool ?? false
+
+        hasCompletedOnboarding = defaults.bool(forKey: Key.hasCompletedOnboarding)
     }
 
     /// 에디터 폰트 크기 허용 범위 — Settings 스테퍼와 ⌘+/⌘- 조정이 공유하는 단일 출처.

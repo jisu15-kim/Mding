@@ -4,23 +4,23 @@
     "2" : {
       "comment" : "Tab width option: 2 spaces per tab"
     },
-    "Full Width" : {
-      "comment" : "View menu item that expands the preview to the full window width"
-    },
-    "Standard Width" : {
-      "comment" : "View menu item that restores the fixed-width preview column"
-    },
     "4" : {
       "comment" : "Tab width option: 4 spaces per tab"
     },
     "8" : {
       "comment" : "Tab width option: 8 spaces per tab"
     },
+    "A fast, focused Markdown editor with live preview." : {
+      "comment" : "Onboarding first page one-line description of what the app is"
+    },
     "Add Link…" : {
       "comment" : "Format menu item that inserts a Markdown link with a URL prompt"
     },
     "Appearance" : {
       "comment" : "Settings section header for appearance options"
+    },
+    "Back" : {
+      "comment" : "Onboarding button that returns to the previous page"
     },
     "Bold" : {
       "comment" : "Format menu item that toggles **bold**"
@@ -49,8 +49,14 @@
     "Copy Relative Path (⌘⌥⇧C)" : {
       "comment" : "Toolbar menu item that copies the file's relative path, with its keyboard shortcut shown"
     },
+    "Create a new file, open an existing one, or fine-tune things anytime in Settings (⌘,)." : {
+      "comment" : "Onboarding final page hint about how to start using the app"
+    },
     "Current default: %@" : {
       "comment" : "Settings caption showing which app currently opens Markdown files"
+    },
+    "Currently opens in %@" : {
+      "comment" : "Onboarding caption showing which app currently opens Markdown files"
     },
     "Custom" : {
       "comment" : "Relative path base option: a user-specified directory"
@@ -106,6 +112,12 @@
     "Format" : {
       "comment" : "Format menu title"
     },
+    "Full Width" : {
+      "comment" : "Toolbar button tooltip that expands the preview to the full window width\nView menu item that expands the preview to the full window width"
+    },
+    "Get Started" : {
+      "comment" : "Onboarding button on the final page that closes onboarding and starts using the app"
+    },
     "Git Root" : {
       "comment" : "Relative path base option: the nearest Git repository root"
     },
@@ -125,7 +137,7 @@
       "comment" : "Format menu item that toggles _italic_"
     },
     "Just you and your Markdown." : {
-      "comment" : "Subtitle on the welcome screen"
+      "comment" : "Onboarding first page tagline (matches the welcome screen subtitle)\nSubtitle on the welcome screen"
     },
     "Keep My Changes" : {
       "comment" : "Conflict alert action: keep local edits"
@@ -133,17 +145,26 @@
     "Light" : {
       "comment" : "Theme option that is always light"
     },
+    "Make Mding the default app for .md files so they open here every time." : {
+      "comment" : "Onboarding default-app page explanation of what setting the default does"
+    },
     "Match Case" : {
       "comment" : "Tooltip of the find bar case-sensitivity toggle"
     },
     "Mding is the default app for Markdown files" : {
       "comment" : "Settings caption shown when Mding is already the default Markdown app"
     },
+    "Mding is your default Markdown app" : {
+      "comment" : "Onboarding caption shown when Mding is already the default Markdown app"
+    },
     "New File" : {
       "comment" : "Welcome screen button that starts a blank untitled document"
     },
     "New Tab" : {
       "comment" : "File menu item that opens a new tab\nTooltip for the button that opens a new tab"
+    },
+    "Next" : {
+      "comment" : "Onboarding button that advances to the next page"
     },
     "No Headings" : {
       "comment" : "Placeholder shown in the outline sidebar when the document has no headings"
@@ -156,6 +177,9 @@
     },
     "Open in Finder" : {
       "comment" : "Tab context menu item that reveals the file in Finder\nToolbar menu item that reveals the file in Finder"
+    },
+    "Open Markdown files in Mding" : {
+      "comment" : "Onboarding default-app page title"
     },
     "Open Recent" : {
       "comment" : "File submenu listing recently opened files"
@@ -185,7 +209,7 @@
       "comment" : "File menu item that saves the current document"
     },
     "Set as Default" : {
-      "comment" : "Settings button that makes Mding the default app for Markdown files"
+      "comment" : "Onboarding button that makes Mding the default app for Markdown files\nSettings button that makes Mding the default app for Markdown files"
     },
     "Show Next Tab" : {
       "comment" : "Window menu item that selects the next tab"
@@ -195,6 +219,9 @@
     },
     "Show Previous Tab" : {
       "comment" : "Window menu item that selects the previous tab"
+    },
+    "Standard Width" : {
+      "comment" : "Toolbar button tooltip that restores the fixed-width preview column\nView menu item that restores the fixed-width preview column"
     },
     "Strikethrough" : {
       "comment" : "Format menu item that toggles ~~strikethrough~~"
@@ -219,6 +246,12 @@
     },
     "View Mode" : {
       "comment" : "Toolbar picker that switches between editor, split, and preview"
+    },
+    "Welcome to Mding" : {
+      "comment" : "Onboarding first page title"
+    },
+    "You're all set" : {
+      "comment" : "Onboarding final page title"
     }
   },
   "version" : "1.0"

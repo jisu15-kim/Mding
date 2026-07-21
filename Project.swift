@@ -3,8 +3,8 @@ import ProjectDescription
 let project = Project(
     name: "Mding",
     settings: .settings(base: [
-        "MARKETING_VERSION": "1.1.0",
-        "CURRENT_PROJECT_VERSION": "6",
+        "MARKETING_VERSION": "1.1.1",
+        "CURRENT_PROJECT_VERSION": "7",
         "DEVELOPMENT_TEAM": "846TMZL7WC",
         // 공증(notarization) 필수 조건 — 모든 타깃에 적용.
         "ENABLE_HARDENED_RUNTIME": "YES",
@@ -47,7 +47,11 @@ let project = Project(
                 .external(name: "Sparkle"),
                 .external(name: "FirebaseAnalytics"),
                 .external(name: "FirebaseCrashlytics"),
-            ]
+            ],
+            // Firebase/GoogleUtilities 는 Obj-C 카테고리(예: NSData+GULGzip 의 gul_dataByGzippingData:)로
+            // 메서드를 제공한다. -ObjC 가 없으면 링커가 카테고리 메서드를 버려 런타임에
+            // "unrecognized selector" 로 크래시난다(예: Analytics 이벤트 업로드 시 payload gzip).
+            settings: .settings(base: ["OTHER_LDFLAGS": ["$(inherited)", "-ObjC"]])
         ),
         .target(
             name: "MdingQuickLook",

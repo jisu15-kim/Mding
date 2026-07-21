@@ -8,6 +8,9 @@ struct MdingApp: App {
         WindowGroup {
             WindowRootView()
         }
+        // 상태복원 데이터가 없을 때(최초 실행·복원 비활성) 창이 시스템 최소치 근처로 작게 뜨는 걸 막는다.
+        // Split(에디터+프리뷰) 모드를 편하게 쓸 폭 — 프리뷰 본문 칼럼 상한(980px)+사이드바 여유.
+        .defaultSize(width: 1100, height: 760)
         .commands {
             UpdateCommands()
             FileCommands()

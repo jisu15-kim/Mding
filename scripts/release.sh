@@ -81,6 +81,19 @@ xcodebuild -exportArchive \
 APP="$RELEASE_DIR/export/Mding.app"
 codesign --verify --deep --strict "$APP"
 
+# 2.5) Crashlytics dSYM 업로드 (크래시 심볼화) --------------------------------
+# 아카이브의 dSYM 을 Firebase 에 올려 크래시 스택을 심볼화한다. plist 의 API 키로 인증하므로
+# 별도 자격증명이 필요 없다. 실패해도(네트워크 등) 릴리스는 계속 — 심볼 누락은 치명적이지 않다.
+echo "▸ Crashlytics dSYM 업로드"
+UPLOAD_SYMBOLS="$REPO_ROOT/Tuist/.build/checkouts/firebase-ios-sdk/Crashlytics/upload-symbols"
+DSYMS="$RELEASE_DIR/Mding.xcarchive/dSYMs"
+if [[ -x "$UPLOAD_SYMBOLS" && -d "$DSYMS" ]]; then
+    "$UPLOAD_SYMBOLS" -gsp Mding/Resources/GoogleService-Info.plist -p mac "$DSYMS" \
+        || echo "⚠️  dSYM 업로드 실패 — 크래시가 미심볼화로 올라갈 수 있음(릴리스는 계속)"
+else
+    echo "⚠️  upload-symbols/dSYM 경로 없음 — dSYM 업로드 건너뜀 ($UPLOAD_SYMBOLS)"
+fi
+
 # 3) DMG 패키징 --------------------------------------------------------------
 echo "▸ DMG 생성"
 command -v create-dmg >/dev/null || brew install create-dmg

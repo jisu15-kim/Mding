@@ -45,6 +45,8 @@ let project = Project(
             dependencies: [
                 .target(name: "MdingQuickLook"),
                 .external(name: "Sparkle"),
+                .external(name: "FirebaseAnalytics"),
+                .external(name: "FirebaseCrashlytics"),
             ]
         ),
         .target(

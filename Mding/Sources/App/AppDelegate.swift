@@ -1,4 +1,5 @@
 import AppKit
+import FirebaseCore
 
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
@@ -14,6 +15,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        // Firebase 초기화 — 번들에 GoogleService-Info.plist 가 있을 때만(없으면 configure 가 크래시).
+        // 이후 Analytics·Crashlytics 가 자동 수집을 시작한다.
+        if Bundle.main.url(forResource: "GoogleService-Info", withExtension: "plist") != nil {
+            FirebaseApp.configure()
+        }
+
         // ⌘⌥←/→ = 이전/다음 탭 (Safari 관례의 보조 단축키 — ⌃Tab/⌘1…9 메뉴 항목과 병행).
         // 메뉴 대신 이벤트 모니터인 이유: SwiftUI Button 은 key equivalent 를 하나만 가질 수 있어
         // 기존 ⌃Tab 항목에 얹을 수 없고, 같은 동작의 메뉴 항목을 중복 노출하지 않기 위해.

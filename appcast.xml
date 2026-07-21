@@ -3,6 +3,14 @@
     <channel>
         <title>Mding</title>
         <item>
+            <title>1.1.1</title>
+            <pubDate>Tue, 21 Jul 2026 11:14:58 +0900</pubDate>
+            <sparkle:version>7</sparkle:version>
+            <sparkle:shortVersionString>1.1.1</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/jisu15-kim/Mding/releases/download/v1.1.1/Mding-1.1.1.dmg" length="3951073" type="application/octet-stream" sparkle:edSignature="YZTV/XtY6oEFgjU9zhy6XaVFc7tWc6CGf3FXDdGIqViGp8mcDhyRm2NmwUqyqiutNBmBdjktIg2HZAaZqbR8AQ=="/>
+        </item>
+        <item>
             <title>1.1.0</title>
             <pubDate>Tue, 21 Jul 2026 09:31:49 +0900</pubDate>
             <sparkle:version>6</sparkle:version>
@@ -17,14 +25,6 @@
             <sparkle:shortVersionString>1.0.4</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <enclosure url="https://github.com/jisu15-kim/Mding/releases/download/v1.0.4/Mding-1.0.4.dmg" length="2072279" type="application/octet-stream" sparkle:edSignature="b800N84m4W9lv95rthonIRNg033C5NUtXfMrBynyPQAfTG0Lh1kjfljXRJPsmAfNO6dP2HTKUHVTMk0kVhqlCg=="/>
-        </item>
-        <item>
-            <title>1.0.3</title>
-            <pubDate>Tue, 14 Jul 2026 17:03:02 +0900</pubDate>
-            <sparkle:version>4</sparkle:version>
-            <sparkle:shortVersionString>1.0.3</sparkle:shortVersionString>
-            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/jisu15-kim/Mding/releases/download/v1.0.3/Mding-1.0.3.dmg" length="2073543" type="application/octet-stream" sparkle:edSignature="vTFbWMbYfGJTXpjuJnmZfs96gtJDuLVAIRuopfuHVwlWhHOc08iR5IDK1DRtPSu1aOnUDIv5VQnHtFSQBg1VCQ=="/>
         </item>
         <item>
             <title>1.0.2</title>
